@@ -53,5 +53,6 @@
     "tslint": "~6.1.0",
     "typescript": "~3.9.5"
   },
-  "description": "An Ionic project"
+  "description": "An Ionic project",
+  "license": "GPL-3.0-only"
 }

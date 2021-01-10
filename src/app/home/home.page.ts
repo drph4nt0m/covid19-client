@@ -83,7 +83,7 @@ export class HomePage {
         query += `ObservationDate[$lte]=${this.formatDate(this.form.get('endingDate').value)}&`;
       }
       if (this.form.get('countries').value) {
-        // query += `$limit=200000&`
+        query += `$limit=200000&`
         this.countriesSelected = this.form.get('countries').value.join(', ');
         this.form.get('countries').value.forEach((country, index) => {
           query += `$or[${index}][Country/Region]=${country.trim()}&`

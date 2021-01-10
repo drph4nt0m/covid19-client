@@ -1,20 +1,133 @@
 <ion-header [translucent]="true">
   <ion-toolbar>
     <ion-title>
-      Blank
+      COVID-19 Dashboard
     </ion-title>
   </ion-toolbar>
+  <ion-toolbar>
+    <ion-title>
+      [ Rahul Singh | CB.EN.P2CYS20027 ]
+    </ion-title>
+  </ion-toolbar>
+  <ion-toolbar>
+    <ion-title>
+      <a href="https://github.com/drph4nt0m/covid19-server" target="_blank">Server Source Code</a> |
+      <a href="https://github.com/drph4nt0m/covid19-client" target="_blank">Client Source Code</a>
+    </ion-title>
+  </ion-toolbar>
+
 </ion-header>
 
-<ion-content [fullscreen]="true">
-  <ion-header collapse="condense">
-    <ion-toolbar>
-      <ion-title size="large">Blank</ion-title>
-    </ion-toolbar>
-  </ion-header>
-
+<ion-content>
   <div id="container">
-    <strong>Ready to create an app?</strong>
-    <p>Start with Ionic <a target="_blank" rel="noopener noreferrer" href="https://ionicframework.com/docs/components">UI Components</a></p>
+    <ion-grid>
+      <ion-row>
+        <ion-col id="search-container">
+          <form [formGroup]="form" (ngSubmit)="getData()">
+            <ion-grid>
+              <ion-row>
+                <ion-col>
+                  <ion-item>
+                    <ion-label position="stacked">Observation Starting Date</ion-label>
+                    <ion-input type="date" formControlName="startingDate"></ion-input>
+                  </ion-item>
+                </ion-col>
+                <ion-col>
+                  <ion-item>
+                    <ion-label position="stacked">Observation Ending Date</ion-label>
+                    <ion-input type="date" formControlName="endingDate"></ion-input>
+                  </ion-item>
+                </ion-col>
+                <ion-col>
+                  <ion-list>
+                    <ion-item>
+                      <ion-label position="stacked">Countries</ion-label>
+                      <ion-select formControlName="countries" multiple="true">
+                        <ion-select-option *ngFor="let country of countriesList" [value]="user">{{country}}
+                        </ion-select-option>
+                      </ion-select>
+                    </ion-item>
+                  </ion-list>
+                </ion-col>
+                <ion-col>
+                  <ion-button type="submit" color="primary" expand="block">
+                    Submit
+                  </ion-button>
+                </ion-col>
+              </ion-row>
+            </ion-grid>
+          </form>
+        </ion-col>
+      </ion-row>
+      <ion-row>
+        <ion-col>
+          <p *ngIf="this.startingDateSelected">
+            from
+            {{this.startingDateSelected}}
+          </p>
+          <p *ngIf="this.endingDateSelected">
+            till
+            {{this.endingDateSelected}}
+          </p>
+          <p *ngIf="this.countriesSelected">
+            in
+            {{this.countriesSelected}}
+          </p>
+        </ion-col>
+      </ion-row>
+      <ion-row>
+        <ion-col id="map-container" size="6">
+          <div id="map"></div>
+        </ion-col>
+        <ion-col id="totals-container" size="3">
+          <ion-grid>
+            <ion-row>
+              <ion-col>
+                <ion-card>
+                  <ion-card-header>
+                    <ion-card-title>Total Confirmed</ion-card-title>
+                  </ion-card-header>
+                  <ion-card-content>
+                    {{covidData.totalConfirmed}}
+                  </ion-card-content>
+                </ion-card>
+              </ion-col>
+              <ion-col>
+                <ion-card>
+                  <ion-card-header>
+                    <ion-card-title>Total Deaths</ion-card-title>
+                  </ion-card-header>
+                  <ion-card-content>
+                    {{covidData.totalDeaths}}
+                  </ion-card-content>
+                </ion-card>
+              </ion-col>
+              <ion-col>
+                <ion-card>
+                  <ion-card-header>
+                    <ion-card-title>Total Recovered</ion-card-title>
+                  </ion-card-header>
+                  <ion-card-content>
+                    {{covidData.totalRecovered}}
+                  </ion-card-content>
+                </ion-card>
+              </ion-col>
+            </ion-row>
+          </ion-grid>
+        </ion-col>
+      </ion-row>
+      <ion-row>
+        <ion-col size="5" offset="1" *ngFor="let ch of chartsData; let i = index">
+          <canvas baseChart width="400" height="400"
+            [datasets]="ch.chartData"
+            [labels]="ch.chartLabels"
+            [options]="ch.chartOptions"
+            [legend]="chartLegend"
+            [chartType]="chartType"
+            [plugins]="chartPlugins">
+          </canvas>
+        </ion-col>
+      </ion-row>
+    </ion-grid>
   </div>
 </ion-content>
